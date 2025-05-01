@@ -23,8 +23,10 @@ class Author(db.Model):
         return name
         
     @validates("phone_number")
-    def validates_phone_number(self, key, number):
-        pass
+    def validates_phone_number(self, key, phone_number):
+        if len(phone_number) != 10 or not phone_number.isdigit(): 
+            raise ValueError("The phone number must be 10 digits.")
+        return phone_number
 
     def __repr__(self):
         return f'Author(id={self.id}, name={self.name})'
