@@ -16,6 +16,7 @@ class Author(db.Model):
     def validates_name(self, key, name):
         if not name: 
             raise ValueError("Name cannot be empty.")
+        
         found_name = db.session.query(Author.id).filter_by(name = name).first()
 
         if found_name is not None: 
@@ -44,7 +45,22 @@ class Post(db.Model):
 
     # Add validators  
     
-
+    @validates('content', 'summary')
+    def validate_length(self, key, string):
+        if( key == 'content'):
+            if len(string) < 250:
+                raise ValueError("Post content must be greater than or equal 250 characters long.")
+        if( key == 'summary'):
+            if len(string) > 250:
+                raise ValueError("Post summary must be less than or equal to 250 characters long.")
+        return string
+    
+    @validates('category')
+    def validate_category(self, key, category):
+        if category != 'Fiction' and category != 'Non-Fiction': 
+            raise ValueError("Category must be Fiction or Non-Fiction.")
+        
+        return category
 
     def __repr__(self):
         return f'Post(id={self.id}, title={self.title} content={self.content}, summary={self.summary})'
