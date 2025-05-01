@@ -28,6 +28,9 @@ class Post(db.Model):
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
     # Add validators  
+    @validates("name")
+    def validates_name(self, key, name):
+        pass
 
 
     def __repr__(self):

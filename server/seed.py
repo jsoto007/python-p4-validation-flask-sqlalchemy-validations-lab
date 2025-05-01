@@ -10,6 +10,7 @@ from models import db, Author, Post
 
 fake = Faker()
 
+print("Seeding 🌱🌱🌱")
 with app.app_context():
 
     Author.query.delete()
@@ -29,3 +30,5 @@ with app.app_context():
     db.session.add_all(posts)
 
     db.session.commit()
+
+print("Done seeding 🪴🪴🪴")
