@@ -12,6 +12,19 @@ class Author(db.Model):
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
     # Add validators 
+    @validates("name")
+    def validates_name(self, key, name):
+        if not name: 
+            raise ValueError("Name cannot be empty.")
+        found_name = db.session.query(Author.id).filter_by(name = name).first()
+
+        if found_name is not None: 
+            raise ValueError("This name already exits, Please pick a new one ")
+        return name
+        
+    @validates("phone_number")
+    def validates_phone_number(self, key, number):
+        pass
 
     def __repr__(self):
         return f'Author(id={self.id}, name={self.name})'
@@ -28,9 +41,7 @@ class Post(db.Model):
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
     # Add validators  
-    @validates("name")
-    def validates_name(self, key, name):
-        pass
+    
 
 
     def __repr__(self):
